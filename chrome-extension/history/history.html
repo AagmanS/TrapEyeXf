@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="history.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🕒 Trap Eye History</h1>
+            <p>Previously analyzed URLs and their risk scores</p>
+        </div>
+        
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search URLs...">
+                <button id="clearHistoryBtn" class="danger-btn">Clear History</button>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="totalAnalyses">0</div>
+                <div class="stat-label">Total Analyses</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="highRiskCount">0</div>
+                <div class="stat-label">High Risk</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="safeCount">0</div>
+                <div class="stat-label">Safe</div>
+            </div>
+        </div>
+        
+        <div class="history-list">
+            <div id="historyItems">
+                <!-- History items will be populated here -->
+                <div class="empty-state">
+                    <div class="empty-icon">🕒</div>
+                    <h3>No Analysis History</h3>
+                    <p>Analyze URLs to see them appear here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="history.js"></script>
+</body>
+</html>

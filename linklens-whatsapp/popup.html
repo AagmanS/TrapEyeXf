@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 300px;
+      padding: 0;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    
+    .header {
+      background: #f0f2f5;
+      padding: 15px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #111b21;
+      margin: 0;
+    }
+    
+    .header p {
+      font-size: 12px;
+      color: #667781;
+      margin: 5px 0 0 0;
+    }
+    
+    .content {
+      padding: 15px;
+    }
+    
+    .status {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    
+    .status-indicator.connected {
+      background-color: #4CAF50;
+    }
+    
+    .status-indicator.disconnected {
+      background-color: #F44336;
+    }
+    
+    .status-text {
+      font-size: 14px;
+      color: #111b21;
+    }
+    
+    .instructions {
+      background: #f0f2f5;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 15px 0;
+    }
+    
+    .instructions h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111b21;
+      margin: 0 0 8px 0;
+    }
+    
+    .instructions ol {
+      padding-left: 18px;
+      margin: 0;
+    }
+    
+    .instructions li {
+      font-size: 12px;
+      color: #667781;
+      margin-bottom: 5px;
+    }
+    
+    .button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background: #25D366;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      margin: 10px 0;
+      transition: background-color 0.2s;
+    }
+    
+    .button:hover {
+      background: #128C7E;
+    }
+    
+    .button.secondary {
+      background: #f0f2f5;
+      color: #111b21;
+    }
+    
+    .button.secondary:hover {
+      background: #e0e0e0;
+    }
+    
+    .footer {
+      padding: 10px 15px;
+      border-top: 1px solid #e0e0e0;
+      font-size: 11px;
+      color: #667781;
+      text-align: center;
+    }
+    
+    #linklens-error, #linklens-success {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>LinkLens for WhatsApp</h1>
+    <p>Link Security Analyzer</p>
+  </div>
+  
+  <div id="linklens-error"></div>
+  <div id="linklens-success"></div>
+  
+  <div class="content">
+    <div class="status">
+      <div class="status-indicator disconnected" id="status-indicator"></div>
+      <div class="status-text" id="status-text">Checking connection...</div>
+    </div>
+    
+    <div class="instructions">
+      <h3>How to use:</h3>
+      <ol>
+        <li>Open WhatsApp Web at web.whatsapp.com</li>
+        <li>Open any chat with links</li>
+        <li>LinkLens will automatically analyze links</li>
+        <li>Safe links appear with green indicators</li>
+        <li>Risky links appear with red indicators</li>
+      </ol>
+    </div>
+    
+    <button class="button" id="scan-button">Scan Current Chat</button>
+    <button class="button secondary" id="settings-button">Extension Settings</button>
+  </div>
+  
+  <div class="footer">
+    LinkLens for WhatsApp v1.0
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🛡️ Trap Eye Settings</h1>
+      <p class="subtitle">Configure the behavior and sensitivity of the phishing detection system</p>
+    </div>
+    
+    <div class="settings-container">
+      <div class="setting-group">
+        <div class="group-header">
+          <h2>Analysis Settings</h2>
+          <p>Control how the extension analyzes URLs</p>
+        </div>
+        
+        <div class="setting">
+          <div class="setting-info">
+            <label for="enableRealTime">Real-time Analysis</label>
+            <p class="description">Automatically analyze URLs as you browse</p>
+          </div>
+          <div class="toggle-switch">
+            <input type="checkbox" id="enableRealTime">
+            <label for="enableRealTime" class="switch"></label>
+          </div>
+        </div>
+        
+        <div class="setting">
+          <div class="setting-info">
+            <label for="riskThreshold">Risk Threshold</label>
+            <p class="description">Minimum risk score to trigger warnings (<span id="thresholdValue">70</span>%)</p>
+          </div>
+          <div class="slider-container">
+            <input type="range" id="riskThreshold" min="10" max="90" value="70">
+          </div>
+        </div>
+      </div>
+      
+      <div class="setting-group">
+        <div class="group-header">
+          <h2>Notification Settings</h2>
+          <p>Control how you receive alerts about risky websites</p>
+        </div>
+        
+        <div class="setting">
+          <div class="setting-info">
+            <label for="enableNotifications">Show Notifications</label>
+            <p class="description">Display desktop notifications for high-risk sites</p>
+          </div>
+          <div class="toggle-switch">
+            <input type="checkbox" id="enableNotifications">
+            <label for="enableNotifications" class="switch"></label>
+          </div>
+        </div>
+        
+        <div class="setting">
+          <div class="setting-info">
+            <label for="enablePageWarnings">Page Warnings</label>
+            <p class="description">Show warning banners on risky websites</p>
+          </div>
+          <div class="toggle-switch">
+            <input type="checkbox" id="enablePageWarnings">
+            <label for="enablePageWarnings" class="switch"></label>
+          </div>
+        </div>
+      </div>
+      
+      <div class="setting-group">
+        <div class="group-header">
+          <h2>API Settings</h2>
+          <p>Configure connection to the analysis server</p>
+        </div>
+        
+        <div class="setting">
+          <div class="setting-info">
+            <label for="apiUrl">API Server URL</label>
+            <p class="description">Address of the phishing detection server</p>
+          </div>
+          <input type="text" id="apiUrl" placeholder="http://localhost:8000">
+        </div>
+        
+        <div class="setting">
+          <div class="setting-info">
+            <label for="apiKey">API Key (Optional)</label>
+            <p class="description">Authentication key for the API server</p>
+          </div>
+          <input type="password" id="apiKey" placeholder="Enter API key if required">
+        </div>
+      </div>
+      
+      <div class="setting-group">
+        <div class="group-header">
+          <h2>Data & Privacy</h2>
+          <p>Control how your data is handled</p>
+        </div>
+        
+        <div class="setting">
+          <div class="setting-info">
+            <label for="enableHistory">URL History Tracking</label>
+            <p class="description">Store analyzed URLs locally for review</p>
+          </div>
+          <div class="toggle-switch">
+            <input type="checkbox" id="enableHistory">
+            <label for="enableHistory" class="switch"></label>
+          </div>
+        </div>
+        
+        <div class="setting">
+          <div class="setting-info">
+            <label for="autoDelete">Auto-delete History</label>
+            <p class="description">Automatically delete history after 30 days</p>
+          </div>
+          <div class="toggle-switch">
+            <input type="checkbox" id="autoDelete">
+            <label for="autoDelete" class="switch"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="actions">
+      <button id="saveBtn" class="primary-btn">Save Settings</button>
+      <button id="resetBtn" class="secondary-btn">Reset to Defaults</button>
+    </div>
+    
+    <div id="status" class="status"></div>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>
