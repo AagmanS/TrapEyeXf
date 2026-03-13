@@ -1,0 +1,128 @@
+[
+  {
+    "label": "IP no HTTPS",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "IP with HTTPS",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "BrandSubd+bad TLD",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "Critical keyword",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "Random domain .ml",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "Punycode",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "Typosquat .com",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "Typosquat .tk",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "Open redirect",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "CF bypass path",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "Data URI",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "Brand+bad TLD",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "URL shortener",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "Brand in subdomain",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "Random+digits",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "Google legit",
+    "risk": "LOW",
+    "prob": 21.0,
+    "forced": false
+  },
+  {
+    "label": "GitHub legit",
+    "risk": "LOW",
+    "prob": 0.0,
+    "forced": false
+  },
+  {
+    "label": "BBC legit",
+    "risk": "LOW",
+    "prob": 0.0,
+    "forced": false
+  },
+  {
+    "label": "Microsoft legit",
+    "risk": "LOW",
+    "prob": 21.0,
+    "forced": false
+  },
+  {
+    "label": "StackOverflow legit",
+    "risk": "LOW",
+    "prob": 0.0,
+    "forced": false
+  },
+  {
+    "label": "Wikipedia legit",
+    "risk": "LOW",
+    "prob": 0.0,
+    "forced": false
+  }
+]

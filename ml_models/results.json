@@ -1,0 +1,56 @@
+[
+  {
+    "label": "IP+noHTTPS",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "BrandSubd+TLD",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "CritKeyword",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "RandomDomain",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "Punycode",
+    "risk": "MEDIUM",
+    "prob": 51.0,
+    "forced": false
+  },
+  {
+    "label": "Typosquat",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "OpenRedir",
+    "risk": "CRITICAL",
+    "prob": 100.0,
+    "forced": true
+  },
+  {
+    "label": "GoogleLegit",
+    "risk": "LOW",
+    "prob": 21.0,
+    "forced": false
+  },
+  {
+    "label": "GitHubLegit",
+    "risk": "LOW",
+    "prob": 0.0,
+    "forced": false
+  }
+]
