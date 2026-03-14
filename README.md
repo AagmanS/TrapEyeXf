@@ -24,7 +24,6 @@ TrapEye is an **AI-powered cybersecurity platform** designed to protect users fr
 - Credential breaches
 
 The system combines **machine learning, browser extensions, threat intelligence APIs, and community reporting** to deliver **real-time protection across web, messaging platforms, and browsers.**
->>>>>>> f89d0954268c47049e07cf015c2d706e92af7fdd
 
 ---
 
@@ -52,7 +51,7 @@ The flagship web dashboard featuring URL Scanner, Fake News Detector, Deepfake A
 
 ---
 
-### 2. Sentinelix — Mobile Cybersecurity App
+### 2. Sentinelix & GuardMe — Mobile Cybersecurity Apps
 
 An AI-powered mobile security guardian protecting users from phishing, scams, QR fraud, job scams, and credential breaches in real-time.
 
@@ -160,11 +159,9 @@ Extracts **20+ features** including:
 🌐 **Web Application**
 
 https://trapeye-demo.onrender.com/
->>>>>>> f89d0954268c47049e07cf015c2d706e92af7fdd
 
 ---
 
-# Screenshots of the Applications
 
 <<<<<<< HEAD
 ### Frontend (TrapEyeX Web)
@@ -266,25 +263,7 @@ npm run dev
 - **Backend API**: http://localhost:8000
 - **API Docs**: http://localhost:8000/api/docs
 =======
-## Sentinelix Dashboard
 
----
-
-## QR Shield – QR Code Scam Detection
-/WhatsApp Image 2026-03-14 at 06.24.51.jpeg
->>>>>>> f89d0954268c47049e07cf015c2d706e92af7fdd
-
----
-
-## Credential Guard – Email Breach Detection
-![Credential Guard](assets/emailbreach.jpg)
-
----
-
-## Password Leak Detection
-![Password Leak](assets/passwordleak.jpg)
-
----
 
 <<<<<<< HEAD
 ## Getting API Keys
@@ -299,29 +278,13 @@ npm run dev
 2. Sign up for a free key
 3. Add to `backend/.env`
 =======
-## Payment Intercept – UPI Scam Detection
-![Payment Intercept](assets/paymentintercept.jpg)
-
----
-
-## Threat Radar – Real Time Scam Intelligence
-![Threat Radar](assets/threatradar.jpg)
-
----
-
-## Job Shield – Fake Job Detection
-![Job Shield](assets/jobshield.jpg)
->>>>>>> f89d0954268c47049e07cf015c2d706e92af7fdd
 
 ---
 
 ## Link Intelligence – Phishing URL Analysis
 ![Link Intelligence](assets/linkintel.jpg)
 
----
 
-<<<<<<< HEAD
-*Built with Google Gemini AI · Scikit-learn · FastAPI · Next.js · React Native*
 =======
 # 🧠 Core Modules
 
@@ -448,6 +411,3 @@ Users can:
 - Build collective threat intelligence
 
 ---
-
-# 🏗️ Project Architecture
->>>>>>> f89d0954268c47049e07cf015c2d706e92af7fdd
