@@ -28,7 +28,7 @@ https://trapeye-demo.onrender.com/
 ---
 
 ## QR Shield – QR Code Scam Detection
-![QR Shield](assets/qrshield.jpg)
+/WhatsApp Image 2026-03-14 at 06.24.51.jpeg
 
 ---
 
