@@ -43,7 +43,8 @@ export function QRModal({ threatId, domain }: QRModalProps) {
     try {
       const base = await resolveSharableBase()
       // Use the Next.js proxy — works from both PC and phone
-      const apiUrl = `/api/threats/${threatId}/qr?base_url=${encodeURIComponent(base)}`
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || '/api';
+      const apiUrl = `${API_BASE}/threats/${threatId}/qr?base_url=${encodeURIComponent(base)}`
       const response = await fetch(apiUrl)
       if (!response.ok) throw new Error(`API error ${response.status}`)
       const data = await response.json()

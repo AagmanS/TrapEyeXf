@@ -175,9 +175,9 @@ def get_threat_qr(
     if not threat:
         raise HTTPException(status_code=404, detail="Threat not found.")
 
-    base = base_url.rstrip('/') if base_url else "https://trapeye.app"
-    # Always route to the dedicated threat-report page
-    qr_url = f"{base}/threat-report/{threat_id}"
+    base = base_url.rstrip('/') if base_url else "https://community-trapeye.vercel.app"
+    # Always route to the dedicated threat page
+    qr_url = f"{base}/threat/{threat_id}"
     qr_base64 = generate_qr_code(qr_url)
     return {"qr_code": qr_base64, "url": qr_url}
 
