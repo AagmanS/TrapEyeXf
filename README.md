@@ -102,7 +102,6 @@ An AI-powered mobile security guardian protecting users from phishing, scams, QR
 
 A browser extension that scans any link in real-time as you hover or click, flagging phishing attempts directly in your browser.
 
-<img src="chrome-extension/extUI.png" width="400" alt="LinkLens Chrome Extension UI"/>
 
 **Key Features:**
 - One-click URL scanning via TrapEye API
