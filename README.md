@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TrapEye — AI-Powered Cybersecurity Ecosystem
 
 <div align="center">
@@ -10,11 +11,26 @@
   ![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi)
   ![Gemini](https://img.shields.io/badge/Google%20Gemini-AI-4285F4?style=for-the-badge&logo=google)
 </div>
+=======
+# 🛡️ TrapEye – AI Cyber Threat Detection Ecosystem
+
+TrapEye is an **AI-powered cybersecurity platform** designed to protect users from modern digital threats such as:
+
+- Phishing links
+- Deepfake media
+- Fake news & misinformation
+- Job scams
+- Payment fraud
+- Credential breaches
+
+The system combines **machine learning, browser extensions, threat intelligence APIs, and community reporting** to deliver **real-time protection across web, messaging platforms, and browsers.**
+>>>>>>> f89d0954268c47049e07cf015c2d706e92af7fdd
 
 ---
 
-## Overview
+# 🚀 Live Demo
 
+<<<<<<< HEAD
 **TrapEye** is a full-stack AI cybersecurity ecosystem that uses a hybrid of traditional machine learning and Google Gemini multimodal AI to detect digital threats across multiple vectors — on the **web**, via **browser extensions**, **WhatsApp**, and a dedicated **mobile app**.
 
 | Module | Purpose | Tech |
@@ -141,11 +157,17 @@ Extracts **20+ features** including:
 - Flags suspicious articles for alerts
 - Auto-refresh every 5 minutes
 - Live threat timeline and distribution charts
+=======
+🌐 **Web Application**
+
+https://trapeye-demo.onrender.com/
+>>>>>>> f89d0954268c47049e07cf015c2d706e92af7fdd
 
 ---
 
-## Tech Stack
+# Screenshots of the Applications
 
+<<<<<<< HEAD
 ### Frontend (TrapEyeX Web)
 - **Next.js 14** (App Router)
 - **TailwindCSS** (custom cybersecurity theme)
@@ -244,68 +266,28 @@ npm run dev
 - **Frontend**: http://localhost:3000
 - **Backend API**: http://localhost:8000
 - **API Docs**: http://localhost:8000/api/docs
+=======
+## Sentinelix Dashboard
 
 ---
 
-## Environment Variables
-
-### Backend (`backend/.env`)
-```env
-GEMINI_API_KEY=your_gemini_api_key_here
-NEWS_API_KEY=your_newsapi_key_here
-DATABASE_URL=postgresql://user:pass@localhost:5432/trapeye_db
-```
-
-> **Note**: The platform works without a database using mock data. API keys enhance functionality but are not required for basic operation.
-
-### Frontend (`frontend/.env.local`)
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8000
-```
+## QR Shield – QR Code Scam Detection
+/WhatsApp Image 2026-03-14 at 06.24.51.jpeg
+>>>>>>> f89d0954268c47049e07cf015c2d706e92af7fdd
 
 ---
 
-## API Reference
-
-### Phishing Detection
-```http
-POST /api/phishing/analyze
-Content-Type: application/json
-
-{"url": "https://suspicious-site.com"}
-```
-
-### Fake News Analysis
-```http
-POST /api/fakenews/analyze
-Content-Type: application/json
-
-{
-  "headline": "SHOCKING: Miracle cure found!",
-  "article_text": "...",
-  "source_url": "..."
-}
-```
-
-### Deepfake Detection
-```http
-POST /api/deepfake/analyze
-Content-Type: multipart/form-data
-file: <image or video file>
-```
-
-### News Feed
-```http
-GET /api/news/feed?category=general&limit=20
-```
-
-### Dashboard Stats
-```http
-GET /api/dashboard/stats
-```
+## Credential Guard – Email Breach Detection
+![Credential Guard](assets/emailbreach.jpg)
 
 ---
 
+## Password Leak Detection
+![Password Leak](assets/passwordleak.jpg)
+
+---
+
+<<<<<<< HEAD
 ## Getting API Keys
 
 ### Gemini API
@@ -317,13 +299,156 @@ GET /api/dashboard/stats
 1. Visit [NewsAPI.org](https://newsapi.org/)
 2. Sign up for a free key
 3. Add to `backend/.env`
+=======
+## Payment Intercept – UPI Scam Detection
+![Payment Intercept](assets/paymentintercept.jpg)
 
 ---
 
-## Disclaimer
-
-TrapEye is designed as an AI-assisted threat awareness tool. Results should be used as probabilistic indicators and not as definitive security verdicts. Always apply human judgment for critical security decisions.
+## Threat Radar – Real Time Scam Intelligence
+![Threat Radar](assets/threatradar.jpg)
 
 ---
 
+## Job Shield – Fake Job Detection
+![Job Shield](assets/jobshield.jpg)
+>>>>>>> f89d0954268c47049e07cf015c2d706e92af7fdd
+
+---
+
+## Link Intelligence – Phishing URL Analysis
+![Link Intelligence](assets/linkintel.jpg)
+
+---
+
+<<<<<<< HEAD
 *Built with Google Gemini AI · Scikit-learn · FastAPI · Next.js · React Native*
+=======
+# 🧠 Core Modules
+
+## 🔗 Link Intelligence
+Detect phishing links using **hybrid threat intelligence models**.
+
+Features:
+
+- Multi-source threat analysis
+- Domain reputation scoring
+- Malware/phishing detection
+- Sandbox link verification
+
+Security Engines Used:
+
+- Safe Browsing
+- OpenPhish
+- IPQS
+- Domain heuristics
+
+---
+
+## 🎭 Deepfake Detection
+Detect AI-generated manipulated media.
+
+Capabilities:
+
+- Image authenticity checks
+- AI generated content detection
+- Pattern recognition using ML models
+
+---
+
+## 📰 Fake News & Article Detector
+Analyze suspicious articles using **NLP based misinformation detection**.
+
+Features:
+
+- Content credibility scoring
+- Semantic analysis
+- Misinformation pattern detection
+
+---
+
+## 🧾 Credential Guard
+Check whether **emails or passwords appear in data breaches.**
+
+Capabilities:
+
+- Dark web breach detection
+- Password leak analysis
+- k-Anonymity based privacy protection
+
+---
+
+## 💰 Payment Intercept
+Protect users from **UPI and QR code payment scams**.
+
+Features:
+
+- Fake UPI detection
+- Collect request identification
+- QR scam alerts
+- Fraud VPA detection
+
+---
+
+## 📷 QR Shield
+Scan QR codes and analyze embedded links.
+
+Protection Against:
+
+- QR phishing attacks
+- Malicious download links
+- Payment redirection scams
+
+---
+
+## 💼 Job Shield
+Detect **fake job offers and recruitment scams.**
+
+Capabilities:
+
+- LinkedIn job analysis
+- Scam pattern recognition
+- Employer verification
+- Risk scoring
+
+---
+
+## 🌐 Chrome Extension – Real Time Protection
+
+TrapEye includes a **browser extension that scans URLs automatically while browsing.**
+
+Features:
+
+- Real time phishing detection
+- Instant security alerts
+- Browser level threat monitoring
+- Safe browsing analysis
+
+---
+
+## 💬 LinkLens Integration
+
+LinkLens analyzes suspicious links shared via messaging platforms.
+
+Capabilities:
+
+- WhatsApp link scanning
+- Fraud detection in forwarded messages
+- Reputation analysis
+
+---
+
+## 🤝 TrapEye Community Shield
+
+A **community powered cybersecurity intelligence system**.
+
+Users can:
+
+- Report suspicious links
+- Share new scam patterns
+- Build collective threat intelligence
+
+---
+
+# 🏗️ Project Architecture
+>>>>>>> f89d0954268c47049e07cf015c2d706e92af7fdd
