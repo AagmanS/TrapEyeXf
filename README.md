@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-# TrapEye — AI-Powered Cybersecurity Ecosystem
+  # TrapEye — AI-Powered Cybersecurity Ecosystem
 
 <div align="center">
   <h3>🛡️ Detect Phishing · Fake News · Deepfakes · Scams · Misinformation</h3>
@@ -11,8 +10,7 @@
   ![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi)
   ![Gemini](https://img.shields.io/badge/Google%20Gemini-AI-4285F4?style=for-the-badge&logo=google)
 </div>
-=======
-# 🛡️ TrapEye – AI Cyber Threat Detection Ecosystem
+🛡️ TrapEye – AI Cyber Threat Detection Ecosystem
 
 TrapEye is an **AI-powered cybersecurity platform** designed to protect users from modern digital threats such as:
 
@@ -29,7 +27,6 @@ The system combines **machine learning, browser extensions, threat intelligence 
 
 # 🚀 Live Demo
 
-<<<<<<< HEAD
 **TrapEye** is a full-stack AI cybersecurity ecosystem that uses a hybrid of traditional machine learning and Google Gemini multimodal AI to detect digital threats across multiple vectors — on the **web**, via **browser extensions**, **WhatsApp**, and a dedicated **mobile app**.
 
 | Module | Purpose | Tech |
@@ -163,7 +160,6 @@ https://trapeye-demo.onrender.com/
 ---
 
 
-<<<<<<< HEAD
 ### Frontend (TrapEyeX Web)
 - **Next.js 14** (App Router)
 - **TailwindCSS** (custom cybersecurity theme)
@@ -265,7 +261,6 @@ npm run dev
 =======
 
 
-<<<<<<< HEAD
 ## Getting API Keys
 
 ### Gemini API
@@ -280,9 +275,6 @@ npm run dev
 =======
 
 ---
-
-## Link Intelligence – Phishing URL Analysis
-![Link Intelligence](assets/linkintel.jpg)
 
 
 =======
