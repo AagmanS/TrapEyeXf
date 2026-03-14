@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrapEye — CyberShield Student Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060a10;
+    --surface: #0d1420;
+    --surface2: #111c2e;
+    --border: rgba(0,200,255,0.12);
+    --cyan: #00c8ff;
+    --green: #00ff9d;
+    --orange: #ff6b35;
+    --red: #ff3366;
+    --yellow: #ffd700;
+    --text: #e8f4ff;
+    --muted: #6b8aaa;
+    --glow-cyan: 0 0 20px rgba(0,200,255,0.3);
+    --glow-green: 0 0 20px rgba(0,255,157,0.3);
+    --glow-red: 0 0 20px rgba(255,51,102,0.3);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated grid bg */
+  body::before {
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(0,200,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,200,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    position:fixed;
+    left:0; top:0; bottom:0;
+    width:230px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display:flex;
+    flex-direction:column;
+    z-index:100;
+    padding:0;
+  }
+
+  .logo {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo-brand {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+
+  .logo-brand span { color: var(--cyan); }
+
+  .logo-sub {
+    font-size: 10px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .nav-section {
+    padding: 16px 12px 8px;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .nav-item {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding: 10px 16px;
+    margin: 2px 8px;
+    border-radius: 8px;
+    cursor:pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+    border: 1px solid transparent;
+  }
+
+  .nav-item:hover {
+    background: rgba(0,200,255,0.07);
+    color: var(--cyan);
+    border-color: var(--border);
+  }
+
+  .nav-item.active {
+    background: rgba(0,200,255,0.12);
+    color: var(--cyan);
+    border-color: rgba(0,200,255,0.25);
+    box-shadow: var(--glow-cyan);
+  }
+
+  .nav-icon { font-size:16px; width:20px; text-align:center; }
+
+  .nav-badge {
+    margin-left:auto;
+    background: var(--red);
+    color:#fff;
+    font-size:10px;
+    font-weight:700;
+    padding: 2px 6px;
+    border-radius:10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .sidebar-bottom {
+    margin-top:auto;
+    padding:16px 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .threat-meter {
+    background: var(--surface2);
+    border-radius:8px;
+    padding:12px;
+    border: 1px solid var(--border);
+  }
+
+  .threat-label {
+    font-size:10px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing:1px;
+    margin-bottom:6px;
+  }
+
+  .threat-bar-wrap { background: rgba(255,255,255,0.05); border-radius:4px; height:6px; }
+  .threat-bar {
+    height:6px;
+    border-radius:4px;
+    background: linear-gradient(90deg, var(--green), var(--yellow), var(--red));
+    width: 62%;
+    transition: width 1s;
+  }
+
+  .threat-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size:13px;
+    color: var(--yellow);
+    margin-top:4px;
+    font-weight:700;
+  }
+
+  /* MAIN */
+  .main {
+    margin-left:230px;
+    padding: 28px 32px;
+    position:relative;
+    z-index:1;
+  }
+
+  /* TAB PAGES */
+  .page { display:none; }
+  .page.active { display:block; }
+
+  /* TOP BAR */
+  .topbar {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:28px;
+  }
+
+  .page-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+  }
+
+  .page-title span { color: var(--cyan); }
+
+  .topbar-right {
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+
+  .xp-badge {
+    background: rgba(0,255,157,0.1);
+    border: 1px solid rgba(0,255,157,0.3);
+    color: var(--green);
+    padding: 6px 14px;
+    border-radius:20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size:12px;
+    font-weight:700;
+  }
+
+  .avatar {
+    width:36px; height:36px;
+    border-radius:50%;
+    background: linear-gradient(135deg, var(--cyan), var(--green));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    font-size:14px;
+    color: var(--bg);
+  }
+
+  /* CARDS */
+  .stat-grid {
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:16px;
+    margin-bottom:24px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius:12px;
+    padding:20px;
+    position:relative;
+    overflow:hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(0,200,255,0.3);
+  }
+
+  .stat-card::before {
+    content:'';
+    position:absolute;
+    top:0; left:0; right:0;
+    height:2px;
+  }
+
+  .stat-card.cyan::before { background: var(--cyan); }
+  .stat-card.green::before { background: var(--green); }
+  .stat-card.red::before { background: var(--red); }
+  .stat-card.orange::before { background: var(--orange); }
+
+  .stat-icon { font-size:24px; margin-bottom:8px; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size:28px;
+    font-weight:800;
+    line-height:1;
+  }
+  .stat-card.cyan .stat-num { color:var(--cyan); }
+  .stat-card.green .stat-num { color:var(--green); }
+  .stat-card.red .stat-num { color:var(--red); }
+  .stat-card.orange .stat-num { color:var(--orange); }
+  .stat-label { font-size:12px; color:var(--muted); margin-top:4px; }
+
+  /* SECTION HEADER */
+  .section-header {
+    font-family: 'Syne', sans-serif;
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .section-header::after {
+    content:'';
+    flex:1;
+    height:1px;
+    background: var(--border);
+    margin-left:8px;
+  }
+
+  /* TWO-COL GRID */
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:24px; }
+  .three-col { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+
+  /* PANEL */
+  .panel {
+    background: var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px;
+  }
+
+  /* SCAM CARDS */
+  .scam-grid {
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:16px;
+    margin-bottom:24px;
+  }
+
+  .scam-card {
+    background: var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px;
+    cursor:pointer;
+    transition: all 0.2s;
+    position:relative;
+    overflow:hidden;
+  }
+
+  .scam-card:hover {
+    border-color: rgba(255,107,53,0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .scam-severity {
+    display:inline-block;
+    padding:3px 8px;
+    border-radius:4px;
+    font-size:10px;
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    letter-spacing:1px;
+    margin-bottom:10px;
+  }
+
+  .sev-critical { background:rgba(255,51,102,0.15); color:var(--red); border:1px solid rgba(255,51,102,0.3); }
+  .sev-high { background:rgba(255,107,53,0.15); color:var(--orange); border:1px solid rgba(255,107,53,0.3); }
+  .sev-medium { background:rgba(255,215,0,0.15); color:var(--yellow); border:1px solid rgba(255,215,0,0.3); }
+
+  .scam-title {
+    font-family:'Syne',sans-serif;
+    font-size:15px;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+
+  .scam-desc { font-size:13px; color:var(--muted); line-height:1.5; margin-bottom:12px; }
+
+  .scam-tags { display:flex; flex-wrap:wrap; gap:4px; }
+  .tag {
+    padding:2px 8px;
+    background:rgba(0,200,255,0.08);
+    border:1px solid rgba(0,200,255,0.15);
+    border-radius:4px;
+    font-size:10px;
+    color:var(--cyan);
+    font-family:'JetBrains Mono',monospace;
+  }
+
+  /* EXPAND SCAM */
+  .scam-expand {
+    display:none;
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px solid var(--border);
+    animation: fadeIn 0.3s ease;
+  }
+
+  .scam-card.open .scam-expand { display:block; }
+
+  .expand-section { margin-bottom:10px; }
+  .expand-title {
+    font-size:11px;
+    font-family:'JetBrains Mono',monospace;
+    color:var(--muted);
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin-bottom:4px;
+  }
+  .expand-list { list-style:none; }
+  .expand-list li {
+    font-size:12px;
+    color:var(--text);
+    padding:3px 0;
+    display:flex;
+    gap:6px;
+  }
+  .expand-list li::before { content:'▸'; color:var(--cyan); flex-shrink:0; }
+
+  /* GLOSSARY */
+  .glossary-search {
+    width:100%;
+    background: var(--surface2);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:10px 16px;
+    color:var(--text);
+    font-family:'Outfit',sans-serif;
+    font-size:14px;
+    margin-bottom:16px;
+    outline:none;
+    transition:border-color 0.2s;
+  }
+
+  .glossary-search:focus { border-color:var(--cyan); }
+  .glossary-search::placeholder { color:var(--muted); }
+
+  .glossary-grid {
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    gap:10px;
+  }
+
+  .term-card {
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px;
+    cursor:pointer;
+    transition:all 0.2s;
+  }
+
+  .term-card:hover {
+    border-color:rgba(0,200,255,0.3);
+    background: rgba(0,200,255,0.05);
+  }
+
+  .term-name {
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    font-weight:700;
+    color:var(--cyan);
+    margin-bottom:4px;
+  }
+
+  .term-def { font-size:12px; color:var(--muted); line-height:1.5; }
+  .term-category {
+    margin-top:6px;
+    font-size:10px;
+    font-family:'JetBrains Mono',monospace;
+    color:var(--green);
+    opacity:0.7;
+  }
+
+  /* QUIZ */
+  .quiz-container { max-width:720px; }
+
+  .quiz-progress {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:24px;
+  }
+
+  .quiz-bar-wrap {
+    flex:1;
+    background:rgba(255,255,255,0.05);
+    border-radius:4px;
+    height:6px;
+  }
+
+  .quiz-bar {
+    height:6px;
+    border-radius:4px;
+    background: linear-gradient(90deg, var(--cyan), var(--green));
+    transition:width 0.5s ease;
+  }
+
+  .quiz-count {
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--muted);
+    white-space:nowrap;
+  }
+
+  .quiz-question {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:24px;
+    margin-bottom:16px;
+  }
+
+  .quiz-q-num {
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--cyan);
+    letter-spacing:2px;
+    margin-bottom:10px;
+  }
+
+  .quiz-q-text {
+    font-family:'Syne',sans-serif;
+    font-size:18px;
+    font-weight:700;
+    line-height:1.4;
+    margin-bottom:4px;
+  }
+
+  .quiz-q-cat {
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:20px;
+  }
+
+  .quiz-options { display:flex; flex-direction:column; gap:8px; }
+
+  .quiz-option {
+    padding:14px 18px;
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:8px;
+    cursor:pointer;
+    font-size:14px;
+    transition:all 0.2s;
+    text-align:left;
+    color:var(--text);
+    font-family:'Outfit',sans-serif;
+  }
+
+  .quiz-option:hover:not(:disabled) {
+    border-color:rgba(0,200,255,0.4);
+    background:rgba(0,200,255,0.07);
+    color:var(--cyan);
+  }
+
+  .quiz-option.correct {
+    border-color:var(--green);
+    background:rgba(0,255,157,0.1);
+    color:var(--green);
+  }
+
+  .quiz-option.wrong {
+    border-color:var(--red);
+    background:rgba(255,51,102,0.1);
+    color:var(--red);
+  }
+
+  .quiz-feedback {
+    padding:14px 18px;
+    border-radius:8px;
+    font-size:13px;
+    margin-top:8px;
+    display:none;
+    animation:fadeIn 0.3s ease;
+    line-height:1.5;
+  }
+
+  .quiz-feedback.show { display:block; }
+  .quiz-feedback.good { background:rgba(0,255,157,0.08); border:1px solid rgba(0,255,157,0.2); color:var(--green); }
+  .quiz-feedback.bad { background:rgba(255,51,102,0.08); border:1px solid rgba(255,51,102,0.2); color:var(--red); }
+
+  .quiz-next-btn {
+    padding:12px 28px;
+    background:var(--cyan);
+    color:var(--bg);
+    border:none;
+    border-radius:8px;
+    font-family:'Syne',sans-serif;
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+    margin-top:16px;
+    display:none;
+    transition:all 0.2s;
+  }
+
+  .quiz-next-btn:hover { filter:brightness(1.1); box-shadow:var(--glow-cyan); }
+  .quiz-next-btn.show { display:inline-block; }
+
+  .score-panel {
+    display:none;
+    text-align:center;
+    padding:48px 24px;
+  }
+
+  .score-panel.show { display:block; animation:fadeIn 0.5s ease; }
+
+  .score-num {
+    font-family:'Syne',sans-serif;
+    font-size:72px;
+    font-weight:800;
+    color:var(--cyan);
+    line-height:1;
+    margin:16px 0;
+  }
+
+  .score-msg { font-size:16px; color:var(--muted); margin-bottom:24px; }
+
+  .quiz-restart {
+    padding:12px 32px;
+    background:transparent;
+    border:2px solid var(--cyan);
+    color:var(--cyan);
+    border-radius:8px;
+    font-family:'Syne',sans-serif;
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+    transition:all 0.2s;
+  }
+  .quiz-restart:hover { background:rgba(0,200,255,0.1); }
+
+  /* CHECKLIST */
+  .checklist-item {
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding:14px 16px;
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:8px;
+    margin-bottom:8px;
+    cursor:pointer;
+    transition:all 0.2s;
+  }
+
+  .checklist-item:hover { border-color:rgba(0,200,255,0.25); }
+
+  .check-box {
+    width:20px; height:20px;
+    border:2px solid var(--muted);
+    border-radius:4px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:all 0.2s;
+    margin-top:1px;
+  }
+
+  .checklist-item.checked .check-box {
+    background:var(--green);
+    border-color:var(--green);
+    box-shadow:var(--glow-green);
+  }
+
+  .check-text { font-size:14px; line-height:1.5; }
+  .checklist-item.checked .check-text { text-decoration:line-through; color:var(--muted); }
+
+  /* REPORT PANEL */
+  .report-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+
+  .report-card {
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px;
+    transition:all 0.2s;
+    cursor:pointer;
+  }
+
+  .report-card:hover {
+    border-color:rgba(0,200,255,0.3);
+    transform:translateY(-2px);
+  }
+
+  .report-icon { font-size:28px; margin-bottom:10px; }
+  .report-title { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; margin-bottom:4px; }
+  .report-url { font-size:12px; color:var(--cyan); font-family:'JetBrains Mono',monospace; margin-bottom:8px; }
+  .report-desc { font-size:12px; color:var(--muted); line-height:1.5; }
+
+  /* ANIMATIONS */
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+  @keyframes scanline { 0%{top:-2px} 100%{top:100%} }
+
+  .blink { animation:pulse 2s infinite; }
+
+  /* LIVE FEED */
+  .live-feed {
+    height:200px;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+
+  .feed-item {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px 12px;
+    background:var(--surface2);
+    border-radius:6px;
+    font-size:12px;
+    font-family:'JetBrains Mono',monospace;
+    animation: fadeIn 0.4s ease;
+    border-left: 2px solid transparent;
+  }
+
+  .feed-item.threat { border-left-color:var(--red); }
+  .feed-item.warn { border-left-color:var(--yellow); }
+  .feed-item.safe { border-left-color:var(--green); }
+
+  .feed-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+  .feed-item.threat .feed-dot { background:var(--red); box-shadow:0 0 6px var(--red); }
+  .feed-item.warn .feed-dot { background:var(--yellow); box-shadow:0 0 6px var(--yellow); }
+  .feed-item.safe .feed-dot { background:var(--green); box-shadow:0 0 6px var(--green); }
+
+  .feed-time { color:var(--muted); margin-left:auto; white-space:nowrap; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width:6px; height:6px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:rgba(0,200,255,0.2); border-radius:3px; }
+  ::-webkit-scrollbar-thumb:hover { background:rgba(0,200,255,0.4); }
+
+  /* RESPONSIVE tweaks */
+  @media (max-width:1200px) {
+    .stat-grid { grid-template-columns:repeat(2,1fr); }
+    .scam-grid { grid-template-columns:repeat(2,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="logo">
+    <div class="logo-brand">Trap<span>Eye</span></div>
+    <div class="logo-sub">CyberShield Academy</div>
+  </div>
+
+  <div class="nav-section">Learn</div>
+  <div class="nav-item active" onclick="showPage('dashboard', this)">
+    <span class="nav-icon">⬡</span> Dashboard
+  </div>
+  <div class="nav-item" onclick="showPage('scams', this)">
+    <span class="nav-icon">⚠</span> Scam Watch
+    <span class="nav-badge">12</span>
+  </div>
+  <div class="nav-item" onclick="showPage('glossary', this)">
+    <span class="nav-icon">◈</span> Glossary
+  </div>
+  <div class="nav-item" onclick="showPage('checklist', this)">
+    <span class="nav-icon">✓</span> Safety Checklist
+  </div>
+
+  <div class="nav-section">Practice</div>
+  <div class="nav-item" onclick="showPage('quiz', this)">
+    <span class="nav-icon">◎</span> Quiz Arena
+  </div>
+  <div class="nav-item" onclick="showPage('report', this)">
+    <span class="nav-icon">⬢</span> Report Center
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="threat-meter">
+      <div class="threat-label blink">● GLOBAL THREAT LEVEL</div>
+      <div class="threat-bar-wrap"><div class="threat-bar"></div></div>
+      <div class="threat-val">ELEVATED · 62%</div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- DASHBOARD PAGE -->
+  <div class="page active" id="page-dashboard">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Cyber <span>Dashboard</span></div>
+        <div style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:4px;">
+          Detect. Report. Educate. — Real-time threat awareness for college students
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="xp-badge">⚡ 1,240 XP</div>
+        <div class="avatar">S</div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stat-grid">
+      <div class="stat-card cyan">
+        <div class="stat-icon">🌐</div>
+        <div class="stat-num">$1.03T</div>
+        <div class="stat-label">Global scam losses 2024</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-icon">🎓</div>
+        <div class="stat-num">57%</div>
+        <div class="stat-label">Students fall for internship scams</div>
+      </div>
+      <div class="stat-card orange">
+        <div class="stat-icon">⚡</div>
+        <div class="stat-num">&lt;24h</div>
+        <div class="stat-label">Average scam completion time</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon">🛡</div>
+        <div class="stat-num">4%</div>
+        <div class="stat-label">Victims who fully recover money</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- Live Feed -->
+      <div class="panel">
+        <div class="section-header">⬡ Live Threat Feed</div>
+        <div class="live-feed" id="liveFeed">
+          <div class="feed-item threat"><div class="feed-dot"></div>Phishing URL detected — fake bank portal<div class="feed-time">just now</div></div>
+          <div class="feed-item warn"><div class="feed-dot"></div>QR code with malicious redirect — campus area<div class="feed-time">2m ago</div></div>
+          <div class="feed-item safe"><div class="feed-dot"></div>URL verified safe — scholarship portal<div class="feed-time">4m ago</div></div>
+          <div class="feed-item threat"><div class="feed-dot"></div>Internship scam reported — fake HR email<div class="feed-time">7m ago</div></div>
+          <div class="feed-item warn"><div class="feed-dot"></div>Suspicious UPI payment request flagged<div class="feed-time">9m ago</div></div>
+          <div class="feed-item safe"><div class="feed-dot"></div>Image verified — legitimate payment proof<div class="feed-time">12m ago</div></div>
+        </div>
+      </div>
+
+      <!-- Quick Learn -->
+      <div class="panel">
+        <div class="section-header">◈ Today's Security Tip</div>
+        <div style="background:rgba(0,200,255,0.05);border:1px solid rgba(0,200,255,0.2);border-radius:8px;padding:16px;margin-bottom:12px;">
+          <div style="color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;margin-bottom:8px;">TIP OF THE DAY</div>
+          <div style="font-size:14px;line-height:1.6;margin-bottom:8px;">Always verify the sender's full email address, not just the display name. Scammers often spoof display names like <strong style="color:var(--orange)">"HR Dept"</strong> while the actual email is <span style="font-family:'JetBrains Mono',monospace;color:var(--red);font-size:12px">hr.apply2024@gmail.ru</span></div>
+          <div style="font-size:11px;color:var(--muted);">Category: Email Phishing · Difficulty: Beginner</div>
+        </div>
+        <div class="section-header" style="font-size:14px;margin-top:16px;">◎ Your Progress</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:13px;color:var(--muted)">Modules Completed</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--cyan)">4/8</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.05);border-radius:4px;height:6px;">
+            <div style="width:50%;height:6px;border-radius:4px;background:linear-gradient(90deg,var(--cyan),var(--green))"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+            <span style="font-size:13px;color:var(--muted)">Quiz Score Avg</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--green)">78%</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.05);border-radius:4px;height:6px;">
+            <div style="width:78%;height:6px;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--cyan))"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick links -->
+    <div class="section-header">⬢ Quick Actions</div>
+    <div class="three-col">
+      <div class="panel" style="cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(0,200,255,0.3)'" onmouseout="this.style.borderColor='var(--border)'" onclick="showPage('quiz', document.querySelectorAll('.nav-item')[4])">
+        <div style="font-size:28px;margin-bottom:10px">◎</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:4px">Take a Quiz</div>
+        <div style="font-size:12px;color:var(--muted)">Test your cybersecurity knowledge with 20+ questions</div>
+      </div>
+      <div class="panel" style="cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(255,107,53,0.3)'" onmouseout="this.style.borderColor='var(--border)'" onclick="showPage('scams', document.querySelectorAll('.nav-item')[1])">
+        <div style="font-size:28px;margin-bottom:10px">⚠</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:4px">Scam Watch</div>
+        <div style="font-size:12px;color:var(--muted)">Browse latest scams targeting college students</div>
+      </div>
+      <div class="panel" style="cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(0,255,157,0.3)'" onmouseout="this.style.borderColor='var(--border)'" onclick="showPage('report', document.querySelectorAll('.nav-item')[5])">
+        <div style="font-size:28px;margin-bottom:10px">⬢</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:4px">Report a Scam</div>
+        <div style="font-size:12px;color:var(--muted)">Find the right authority to report cybercrime</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCAM WATCH PAGE -->
+  <div class="page" id="page-scams">
+    <div class="topbar">
+      <div class="page-title">Scam <span>Watch</span></div>
+      <div class="topbar-right">
+        <select style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-family:'Outfit',sans-serif;outline:none;" onchange="filterScams(this.value)">
+          <option value="all">All Categories</option>
+          <option value="phishing">Phishing</option>
+          <option value="financial">Financial</option>
+          <option value="social">Social Engineering</option>
+          <option value="job">Job Scams</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="scam-grid" id="scamGrid">
+      <!-- Phishing -->
+      <div class="scam-card" data-cat="phishing" onclick="toggleScam(this)">
+        <div class="scam-severity sev-critical">CRITICAL</div>
+        <div class="scam-title">🎣 University Phishing Email</div>
+        <div class="scam-desc">Fake emails impersonating university admin demanding you "verify your account" or lose access.</div>
+        <div class="scam-tags"><span class="tag">phishing</span><span class="tag">email</span><span class="tag">impersonation</span></div>
+        <div class="scam-expand">
+          <div class="expand-section">
+            <div class="expand-title">Red Flags</div>
+            <ul class="expand-list">
+              <li>Sender email doesn't match official domain</li>
+              <li>Creates extreme urgency ("24 hours")</li>
+              <li>Link URL doesn't match university site</li>
+              <li>Asks for password directly</li>
+            </ul>
+          </div>
+          <div class="expand-section">
+            <div class="expand-title">How to Avoid</div>
+            <ul class="expand-list">
+              <li>Never click links — go directly to the site</li>
+              <li>Verify with IT department directly</li>
+              <li>Enable 2FA on your student account</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Internship -->
+      <div class="scam-card" data-cat="job" onclick="toggleScam(this)">
+        <div class="scam-severity sev-critical">CRITICAL</div>
+        <div class="scam-title">💼 Fake Internship Offer</div>
+        <div class="scam-desc">Too-good-to-be-true remote internships asking you to pay for "training kits" or share bank details for "salary setup".</div>
+        <div class="scam-tags"><span class="tag">job</span><span class="tag">financial</span><span class="tag">social-eng</span></div>
+        <div class="scam-expand">
+          <div class="expand-section">
+            <div class="expand-title">Red Flags</div>
+            <ul class="expand-list">
+              <li>Hired without proper interview</li>
+              <li>Company can't be found on LinkedIn</li>
+              <li>Asks you to buy equipment first</li>
+              <li>Payment via UPI to personal numbers</li>
+            </ul>
+          </div>
+          <div class="expand-section">
+            <div class="expand-title">How to Avoid</div>
+            <ul class="expand-list">
+              <li>Verify company on official websites</li>
+              <li>Never pay to get a job</li>
+              <li>Use official campus placement portals</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- QR Scam -->
+      <div class="scam-card" data-cat="financial" onclick="toggleScam(this)">
+        <div class="scam-severity sev-high">HIGH</div>
+        <div class="scam-title">📱 QR Code Payment Fraud</div>
+        <div class="scam-desc">Malicious QR codes placed on canteen tables, hostel noticeboards that redirect to phishing payment pages.</div>
+        <div class="scam-tags"><span class="tag">qr-code</span><span class="tag">upi</span><span class="tag">payment</span></div>
+        <div class="scam-expand">
+          <div class="expand-section">
+            <div class="expand-title">Red Flags</div>
+            <ul class="expand-list">
+              <li>QR code sticker pasted over original</li>
+              <li>URL after scan looks odd</li>
+              <li>Asks you to enter UPI PIN to "receive" money</li>
+            </ul>
+          </div>
+          <div class="expand-section">
+            <div class="expand-title">How to Avoid</div>
+            <ul class="expand-list">
+              <li>Always preview URL before opening</li>
+              <li>Use QR scanner with link preview</li>
+              <li>PIN is only needed to send, not receive</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scholarship -->
+      <div class="scam-card" data-cat="financial" onclick="toggleScam(this)">
+        <div class="scam-severity sev-high">HIGH</div>
+        <div class="scam-title">🎓 Scholarship / Loan Scam</div>
+        <div class="scam-desc">Fraudulent WhatsApp/Telegram messages offering government scholarships requiring registration fees or Aadhaar upload.</div>
+        <div class="scam-tags"><span class="tag">scholarship</span><span class="tag">govt-impersonation</span><span class="tag">identity</span></div>
+        <div class="scam-expand">
+          <div class="expand-section">
+            <div class="expand-title">Red Flags</div>
+            <ul class="expand-list">
+              <li>Unofficial WhatsApp/Telegram source</li>
+              <li>Requires upfront "processing fee"</li>
+              <li>Asks for Aadhaar or bank OTP</li>
+            </ul>
+          </div>
+          <div class="expand-section">
+            <div class="expand-title">How to Avoid</div>
+            <ul class="expand-list">
+              <li>Check only NSP (scholarships.gov.in)</li>
+              <li>Never share Aadhaar on unofficial platforms</li>
+              <li>Real scholarships never ask for fees</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- OTP Fraud -->
+      <div class="scam-card" data-cat="social" onclick="toggleScam(this)">
+        <div class="scam-severity sev-critical">CRITICAL</div>
+        <div class="scam-title">🔢 OTP / SIM Swap Fraud</div>
+        <div class="scam-desc">Scammer calls pretending to be bank/telecom support, tricks you into sharing OTP to "prevent account deactivation".</div>
+        <div class="scam-tags"><span class="tag">otp</span><span class="tag">sim-swap</span><span class="tag">vishing</span></div>
+        <div class="scam-expand">
+          <div class="expand-section">
+            <div class="expand-title">Red Flags</div>
+            <ul class="expand-list">
+              <li>Unexpected call about account issue</li>
+              <li>Pressure to share OTP "within 2 minutes"</li>
+              <li>Caller knows partial account details (social engineering)</li>
+            </ul>
+          </div>
+          <div class="expand-section">
+            <div class="expand-title">How to Avoid</div>
+            <ul class="expand-list">
+              <li>Banks NEVER ask for OTP via phone</li>
+              <li>Hang up and call bank's official number</li>
+              <li>Block SIM if you get deactivation SMSes</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Romance Scam -->
+      <div class="scam-card" data-cat="social" onclick="toggleScam(this)">
+        <div class="scam-severity sev-medium">MEDIUM</div>
+        <div class="scam-title">💔 Romance / Sextortion Scam</div>
+        <div class="scam-desc">Fake profiles on dating apps / Instagram build emotional connection, then request money or threaten to leak intimate content.</div>
+        <div class="scam-tags"><span class="tag">social-media</span><span class="tag">sextortion</span><span class="tag">blackmail</span></div>
+        <div class="scam-expand">
+          <div class="expand-section">
+            <div class="expand-title">Red Flags</div>
+            <ul class="expand-list">
+              <li>Profile photos look too perfect (AI-generated)</li>
+              <li>Refuses video calls or makes excuses</li>
+              <li>Sudden financial emergency after trust is built</li>
+            </ul>
+          </div>
+          <div class="expand-section">
+            <div class="expand-title">How to Avoid</div>
+            <ul class="expand-list">
+              <li>Reverse image search profile photos</li>
+              <li>Never send money to online strangers</li>
+              <li>Report sextortion to cybercrime.gov.in immediately</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fake App -->
+      <div class="scam-card" data-cat="phishing" onclick="toggleScam(this)">
+        <div class="scam-severity sev-high">HIGH</div>
+        <div class="scam-title">📲 Fake Banking / UPI App</div>
+        <div class="scam-desc">APK files shared via WhatsApp mimicking BHIM, Google Pay, or popular banking apps that steal credentials.</div>
+        <div class="scam-tags"><span class="tag">malware</span><span class="tag">apk</span><span class="tag">credential-theft</span></div>
+        <div class="scam-expand">
+          <div class="expand-section">
+            <div class="expand-title">Red Flags</div>
+            <ul class="expand-list">
+              <li>Shared as APK, not via Play Store</li>
+              <li>Asks for excessive permissions</li>
+              <li>UI looks slightly different from original</li>
+            </ul>
+          </div>
+          <div class="expand-section">
+            <div class="expand-title">How to Avoid</div>
+            <ul class="expand-list">
+              <li>Only install apps from official stores</li>
+              <li>Disable "install from unknown sources"</li>
+              <li>Check app permissions before installing</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lottery -->
+      <div class="scam-card" data-cat="financial" onclick="toggleScam(this)">
+        <div class="scam-severity sev-medium">MEDIUM</div>
+        <div class="scam-title">🎰 Lottery / Prize Scam</div>
+        <div class="scam-desc">"You've won ₹50,000!" SMS/emails requiring you to pay taxes or fees first to claim non-existent prize money.</div>
+        <div class="scam-tags"><span class="tag">lottery</span><span class="tag">advance-fee</span><span class="tag">sms</span></div>
+        <div class="scam-expand">
+          <div class="expand-section">
+            <div class="expand-title">How to Avoid</div>
+            <ul class="expand-list">
+              <li>You can't win a contest you didn't enter</li>
+              <li>Real prizes never require upfront fees</li>
+              <li>Ignore and delete such messages</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cyber Stalking -->
+      <div class="scam-card" data-cat="social" onclick="toggleScam(this)">
+        <div class="scam-severity sev-medium">MEDIUM</div>
+        <div class="scam-title">👁 Cyber Stalking & Doxxing</div>
+        <div class="scam-desc">Harassers collect publicly available personal information to intimidate, threaten, or expose victims online.</div>
+        <div class="scam-tags"><span class="tag">privacy</span><span class="tag">harassment</span><span class="tag">social-media</span></div>
+        <div class="scam-expand">
+          <div class="expand-section">
+            <div class="expand-title">How to Avoid</div>
+            <ul class="expand-list">
+              <li>Audit your social media privacy settings</li>
+              <li>Never post real-time location</li>
+              <li>Use a pseudonym on public forums</li>
+              <li>Report to cybercrime.gov.in & NCRB</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GLOSSARY PAGE -->
+  <div class="page" id="page-glossary">
+    <div class="topbar">
+      <div class="page-title">Cyber <span>Glossary</span></div>
+    </div>
+
+    <input type="text" class="glossary-search" placeholder="🔍  Search terms — e.g. phishing, malware, firewall..." oninput="filterGlossary(this.value)">
+
+    <div class="section-header">⬡ Core Terms</div>
+    <div class="glossary-grid" id="glossaryGrid">
+    </div>
+  </div>
+
+  <!-- SAFETY CHECKLIST PAGE -->
+  <div class="page" id="page-checklist">
+    <div class="topbar">
+      <div class="page-title">Safety <span>Checklist</span></div>
+      <div class="topbar-right">
+        <div class="xp-badge" id="checkProgress">0 / 20 done</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="section-header">🔐 Account Security</div>
+        <div id="checklist-account"></div>
+        <div class="section-header" style="margin-top:20px">📱 Device Safety</div>
+        <div id="checklist-device"></div>
+      </div>
+      <div>
+        <div class="section-header">🌐 Online Behaviour</div>
+        <div id="checklist-online"></div>
+        <div class="section-header" style="margin-top:20px">💳 Financial Safety</div>
+        <div id="checklist-finance"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ PAGE -->
+  <div class="page" id="page-quiz">
+    <div class="topbar">
+      <div class="page-title">Quiz <span>Arena</span></div>
+      <div class="topbar-right">
+        <div class="xp-badge" id="quizXP">Score: 0</div>
+      </div>
+    </div>
+
+    <div class="quiz-container">
+      <div class="quiz-progress">
+        <div class="quiz-bar-wrap"><div class="quiz-bar" id="quizBar" style="width:0%"></div></div>
+        <div class="quiz-count" id="quizCount">Q 1 / 10</div>
+      </div>
+
+      <div id="quizActive">
+        <div class="quiz-question" id="quizQuestion">
+          <div class="quiz-q-num" id="qNum">QUESTION 01</div>
+          <div class="quiz-q-text" id="qText"></div>
+          <div class="quiz-q-cat" id="qCat"></div>
+          <div class="quiz-options" id="qOptions"></div>
+          <div class="quiz-feedback" id="qFeedback"></div>
+        </div>
+        <button class="quiz-next-btn" id="nextBtn" onclick="nextQuestion()">Next Question →</button>
+      </div>
+
+      <div class="score-panel quiz-question" id="scorePanelWrap">
+        <div style="font-size:40px">🏆</div>
+        <div class="score-num" id="scoreNum">0/10</div>
+        <div class="score-msg" id="scoreMsg"></div>
+        <button class="quiz-restart" onclick="restartQuiz()">↺ Try Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPORT CENTER PAGE -->
+  <div class="page" id="page-report">
+    <div class="topbar">
+      <div class="page-title">Report <span>Center</span></div>
+    </div>
+
+    <div style="background:rgba(255,51,102,0.07);border:1px solid rgba(255,51,102,0.2);border-radius:12px;padding:16px 20px;margin-bottom:24px;display:flex;gap:12px;align-items:center;">
+      <span style="font-size:24px">🚨</span>
+      <div>
+        <div style="font-weight:700;margin-bottom:2px">Immediate Danger?</div>
+        <div style="font-size:13px;color:var(--muted)">If you've been scammed or face cyber threat, dial <strong style="color:var(--red);font-family:'JetBrains Mono',monospace">1930</strong> (National Cybercrime Helpline) immediately. Available 24×7.</div>
+      </div>
+    </div>
+
+    <div class="section-header">⬢ Reporting Authorities — India</div>
+    <div class="report-grid">
+      <div class="report-card">
+        <div class="report-icon">🏛</div>
+        <div class="report-title">National Cybercrime Portal</div>
+        <div class="report-url">cybercrime.gov.in</div>
+        <div class="report-desc">Official Government of India portal. File complaints for financial fraud, child abuse, social media crimes, and all cybercrimes. Available 24/7.</div>
+      </div>
+      <div class="report-card">
+        <div class="report-icon">📞</div>
+        <div class="report-title">Cyber Crime Helpline</div>
+        <div class="report-url">Helpline: 1930</div>
+        <div class="report-desc">Call 1930 for immediate assistance with online financial frauds. Quick response team that can alert banks to freeze transactions.</div>
+      </div>
+      <div class="report-card">
+        <div class="report-icon">🏦</div>
+        <div class="report-title">Reserve Bank of India</div>
+        <div class="report-url">bankingombudsman.rbi.org.in</div>
+        <div class="report-desc">Report banking fraud, unauthorized transactions, UPI scams, and online payment frauds. RBI Ombudsman handles bank-related cybercrimes.</div>
+      </div>
+      <div class="report-card">
+        <div class="report-icon">📡</div>
+        <div class="report-title">CERT-In</div>
+        <div class="report-url">cert-in.org.in · incident@cert-in.org.in</div>
+        <div class="report-desc">Indian Computer Emergency Response Team. Report malware, phishing websites, data breaches, and critical infrastructure attacks.</div>
+      </div>
+      <div class="report-card">
+        <div class="report-icon">🚔</div>
+        <div class="report-title">Local Cyber Police Cell</div>
+        <div class="report-url">cybercrime.gov.in/Locateofficer.aspx</div>
+        <div class="report-desc">File FIR at your nearest cyber police station. Use the portal to locate your jurisdiction's cybercrime unit for in-person reporting.</div>
+      </div>
+      <div class="report-card">
+        <div class="report-icon">📱</div>
+        <div class="report-title">Sanchar Saathi (DoT)</div>
+        <div class="report-url">sancharsaathi.gov.in · Helpline: 1800-11-0420</div>
+        <div class="report-desc">Report mobile fraud, fake SIM cards, and telecom-related scams. Block stolen phones and report misuse of your phone number.</div>
+      </div>
+    </div>
+
+    <div class="section-header" style="margin-top:24px">✅ Steps to Take Immediately After a Scam</div>
+    <div class="two-col">
+      <div class="panel">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="background:rgba(0,200,255,0.15);color:var(--cyan);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;flex-shrink:0">1</div>
+            <div><strong>Call 1930 immediately</strong><br><span style="font-size:12px;color:var(--muted)">Report financial fraud within the first hour for best chance of recovery</span></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="background:rgba(0,200,255,0.15);color:var(--cyan);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;flex-shrink:0">2</div>
+            <div><strong>Change all passwords</strong><br><span style="font-size:12px;color:var(--muted)">Email, banking, and social media accounts — use a fresh device if possible</span></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="background:rgba(0,200,255,0.15);color:var(--cyan);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;flex-shrink:0">3</div>
+            <div><strong>Screenshot everything</strong><br><span style="font-size:12px;color:var(--muted)">Preserve evidence: messages, transaction IDs, scammer profiles</span></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="background:rgba(0,200,255,0.15);color:var(--cyan);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;flex-shrink:0">4</div>
+            <div><strong>File on cybercrime.gov.in</strong><br><span style="font-size:12px;color:var(--muted)">Submit formal complaint with all collected evidence</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="background:rgba(0,255,157,0.15);color:var(--green);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;flex-shrink:0">5</div>
+            <div><strong>Notify your bank</strong><br><span style="font-size:12px;color:var(--muted)">Request chargeback or transaction block; report card for reissuance</span></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="background:rgba(0,255,157,0.15);color:var(--green);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;flex-shrink:0">6</div>
+            <div><strong>Run a malware scan</strong><br><span style="font-size:12px;color:var(--muted)">If you installed anything suspicious, scan all devices immediately</span></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="background:rgba(0,255,157,0.15);color:var(--green);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;flex-shrink:0">7</div>
+            <div><strong>Tell someone you trust</strong><br><span style="font-size:12px;color:var(--muted)">Scams cause stress — tell a friend, family, or counsellor</span></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="background:rgba(0,255,157,0.15);color:var(--green);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;flex-shrink:0">8</div>
+            <div><strong>Warn others in your college group</strong><br><span style="font-size:12px;color:var(--muted)">Share scam details (without personal info) to protect peers</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// === NAVIGATION ===
+function showPage(pageId, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + pageId).classList.add('active');
+  if(el) el.classList.add('active');
+}
+
+// === SCAM FILTER ===
+function filterScams(cat) {
+  document.querySelectorAll('.scam-card').forEach(c => {
+    c.style.display = (cat === 'all' || c.dataset.cat === cat) ? '' : 'none';
+  });
+}
+
+function toggleScam(card) {
+  card.classList.toggle('open');
+}
+
+// === GLOSSARY DATA ===
+const terms = [
+  {name:'Phishing', def:'Fraudulent attempt to obtain sensitive info by impersonating a trusted entity via email or website.', cat:'Attack Type'},
+  {name:'Malware', def:'Malicious software designed to disrupt, damage, or gain unauthorized access to computer systems.', cat:'Threat'},
+  {name:'Ransomware', def:'Malware that encrypts files and demands payment for decryption keys.', cat:'Attack Type'},
+  {name:'Social Engineering', def:'Psychological manipulation of people into performing actions or divulging confidential information.', cat:'Technique'},
+  {name:'Two-Factor Auth (2FA)', def:'Security process requiring two different forms of verification to access an account.', cat:'Defense'},
+  {name:'VPN', def:'Virtual Private Network — encrypts internet traffic and masks IP address for privacy.', cat:'Tool'},
+  {name:'Firewall', def:'Network security system monitoring and controlling incoming/outgoing traffic based on security rules.', cat:'Defense'},
+  {name:'SQL Injection', def:'Attack where malicious SQL code is inserted into a query to manipulate a database.', cat:'Attack Type'},
+  {name:'Zero-Day', def:'Unknown software vulnerability exploited by attackers before developers can patch it.', cat:'Vulnerability'},
+  {name:'Encryption', def:'Process of encoding data so only authorized parties can access it using a key.', cat:'Concept'},
+  {name:'Brute Force', def:'Trial-and-error method to guess passwords or encryption keys systematically.', cat:'Attack Type'},
+  {name:'Spoofing', def:'Disguising communications from an unknown source as being from a known trusted source.', cat:'Technique'},
+  {name:'MITM Attack', def:'Man-in-the-Middle: attacker secretly intercepts and relays messages between two parties.', cat:'Attack Type'},
+  {name:'DDoS', def:'Distributed Denial of Service: flooding a server with traffic to make it unavailable.', cat:'Attack Type'},
+  {name:'Vishing', def:'Voice phishing — scam calls impersonating banks, government agencies, or tech support.', cat:'Attack Type'},
+  {name:'Smishing', def:'SMS phishing — fraudulent text messages containing malicious links or requesting personal info.', cat:'Attack Type'},
+  {name:'Keylogger', def:'Spyware that records keystrokes to capture passwords and sensitive information.', cat:'Malware'},
+  {name:'Botnet', def:'Network of infected computers controlled remotely for coordinated cyberattacks.', cat:'Threat'},
+  {name:'Darknet', def:'Encrypted overlay network accessible only via special software (Tor), often used for illegal activity.', cat:'Concept'},
+  {name:'Cyberstalking', def:'Repeated use of technology to harass, monitor, or intimidate an individual online.', cat:'Crime'},
+  {name:'Doxxing', def:'Researching and publicly exposing private/personal info about an individual online.', cat:'Crime'},
+  {name:'Sextortion', def:'Threatening to reveal intimate images unless the victim pays or provides more content.', cat:'Crime'},
+  {name:'Credential Stuffing', def:'Using leaked username/password combos to gain unauthorized access to multiple accounts.', cat:'Attack Type'},
+  {name:'OTP Fraud', def:'Tricking users into sharing One-Time Passwords to authorize unauthorized transactions.', cat:'Crime'},
+  {name:'ARP Poisoning', def:'Sending fake ARP messages to link the attacker\'s MAC address with a legitimate IP address.', cat:'Attack Type'},
+  {name:'Penetration Testing', def:'Authorized simulated cyberattack on a system to evaluate security vulnerabilities.', cat:'Defense'},
+  {name:'HTTPS', def:'Hypertext Transfer Protocol Secure — encrypts data between browser and web server.', cat:'Protocol'},
+  {name:'Public Key Cryptography', def:'Asymmetric encryption using a public key to encrypt and private key to decrypt data.', cat:'Concept'},
+  {name:'Bug Bounty', def:'Reward programs offering compensation to researchers who find and responsibly disclose vulnerabilities.', cat:'Defense'},
+  {name:'Honeypot', def:'Decoy system set up to attract and detect attackers while protecting real systems.', cat:'Defense'},
+  {name:'OSINT', def:'Open Source Intelligence — gathering data from publicly available sources for investigation.', cat:'Technique'},
+  {name:'Digital Forensics', def:'Recovering and investigating material found in digital devices for use in legal proceedings.', cat:'Field'},
+];
+
+function renderGlossary(filter='') {
+  const grid = document.getElementById('glossaryGrid');
+  const filtered = terms.filter(t =>
+    t.name.toLowerCase().includes(filter.toLowerCase()) ||
+    t.def.toLowerCase().includes(filter.toLowerCase())
+  );
+  grid.innerHTML = filtered.map(t => `
+    <div class="term-card">
+      <div class="term-name">${t.name}</div>
+      <div class="term-def">${t.def}</div>
+      <div class="term-category">${t.cat}</div>
+    </div>
+  `).join('');
+}
+
+function filterGlossary(v) { renderGlossary(v); }
+renderGlossary();
+
+// === CHECKLIST DATA ===
+const checkItems = {
+  account: [
+    'Enable 2FA on all email and social media accounts',
+    'Use a password manager — never reuse passwords',
+    'Check for breached accounts on haveibeenpwned.com',
+    'Review app permissions on your Google/Apple account',
+    'Enable login alerts for suspicious sign-ins',
+  ],
+  device: [
+    'Keep OS and apps updated — don\'t delay security patches',
+    'Install apps only from Play Store / App Store',
+    'Set a screen lock (PIN, fingerprint, or pattern)',
+    'Enable remote wipe on your phone',
+    'Don\'t charge phone at public USB ports (juice jacking risk)',
+  ],
+  online: [
+    'Verify email sender\'s full address before clicking links',
+    'Don\'t share personal info in WhatsApp/Telegram groups',
+    'Review privacy settings on Instagram, Facebook, Snapchat',
+    'Use a VPN on public Wi-Fi (college canteen, library)',
+    'Think before you post — location data in photos',
+  ],
+  finance: [
+    'Never share OTP, CVV, or PIN with anyone',
+    'Verify UPI payment receivers before sending money',
+    'Set daily transaction limits on mobile banking apps',
+    'Register mobile number for bank transaction alerts',
+    'Check bank statements weekly for unauthorized transactions',
+  ]
+};
+
+let checkState = {};
+
+function renderChecklists() {
+  Object.entries(checkItems).forEach(([sec, items]) => {
+    const el = document.getElementById('checklist-' + sec);
+    el.innerHTML = items.map((item, i) => {
+      const key = sec + '-' + i;
+      return `<div class="checklist-item ${checkState[key]?'checked':''}" onclick="toggleCheck('${key}', this)">
+        <div class="check-box">${checkState[key]?'✓':''}</div>
+        <div class="check-text">${item}</div>
+      </div>`;
+    }).join('');
+  });
+  updateCheckProgress();
+}
+
+function toggleCheck(key, el) {
+  checkState[key] = !checkState[key];
+  el.classList.toggle('checked');
+  const box = el.querySelector('.check-box');
+  box.textContent = checkState[key] ? '✓' : '';
+  updateCheckProgress();
+}
+
+function updateCheckProgress() {
+  const total = Object.keys(checkItems).reduce((a,k) => a + checkItems[k].length, 0);
+  const done = Object.values(checkState).filter(Boolean).length;
+  document.getElementById('checkProgress').textContent = `${done} / ${total} done`;
+}
+
+renderChecklists();
+
+// === QUIZ DATA ===
+const quizData = [
+  {q:'What does "phishing" mean in cybersecurity?', opts:['Catching fish in a network','Fraudulently obtaining sensitive info by impersonation','A type of firewall','A protocol for secure browsing'], ans:1, cat:'Attack Types', exp:'Phishing uses fake emails or sites to trick users into revealing passwords or financial info. Always verify the sender!'},
+  {q:'You get an SMS: "Your account will be blocked, verify now: bit.ly/xyz". What should you do?', opts:['Click the link immediately','Call your bank\'s official number to verify','Reply with your account details','Share it with friends to warn them'], ans:1, cat:'Practical Safety', exp:'Never click unexpected short links. Always call the official number from the back of your card or the bank\'s website.'},
+  {q:'What is 2FA (Two-Factor Authentication)?', opts:['Two passwords for one account','Login requiring both password and a second verification step','Two different email accounts','A type of encryption'], ans:1, cat:'Defenses', exp:'2FA adds a second layer — usually a code sent to your phone — so hackers can\'t access your account with just a password.'},
+  {q:'A recruiter offers a high-paying remote internship but asks you to buy a ₹3000 "training kit" first. This is:',opts:['A legitimate opportunity','An advance-fee / job scam','A government scheme','A standard HR process'], ans:1, cat:'Job Scams', exp:'Legitimate companies NEVER ask candidates to pay to get a job. This is a classic advance-fee fraud targeting students.'},
+  {q:'What does HTTPS in a URL indicate?',opts:['The website is from India (HT = Hindustan)','The connection is encrypted between browser and server','The website is government-verified','The site has no ads'], ans:1, cat:'Web Safety', exp:'HTTPS uses SSL/TLS encryption. While it means the connection is secure, it doesn\'t guarantee the site itself is legitimate!'},
+  {q:'Which of these is the official Indian cybercrime reporting portal?',opts:['safeinternet.in','cybercrime.gov.in','reportcrime.org','indianpolice.com'], ans:1, cat:'Reporting', exp:'cybercrime.gov.in is the official Ministry of Home Affairs portal. You can also call 1930 for immediate help.'},
+  {q:'A QR code at a cafe counter asks you to enter your UPI PIN to "receive" a discount. What\'s happening?',opts:['A genuine discount offer','A UPI scam — PIN is only for sending, not receiving','A restaurant loyalty program','A government cashback scheme'], ans:1, cat:'UPI/Payment Fraud', exp:'You NEVER need to enter a PIN to receive money on UPI. Scammers use this trick to initiate unauthorized payments from your account.'},
+  {q:'What is a "zero-day vulnerability"?',opts:['A bug fixed in zero days','An unknown flaw exploited before a patch exists','A virus that activates at midnight','A server that takes zero time to respond'], ans:1, cat:'Concepts', exp:'Zero-day means developers have had zero days to fix it. These are extremely dangerous as no patch exists when discovered.'},
+  {q:'You receive an email from "admin@g00gle.com" asking to verify your account. This is an example of:',opts:['A legitimate Google email','Domain spoofing / homograph attack','A bug bounty notification','An automatic security alert'], ans:1, cat:'Attack Types', exp:'"g00gle" uses zeroes instead of "o"s — a classic domain spoofing trick. Always check the exact spelling of email domains!'},
+  {q:'What should you do FIRST if you suspect your bank account has been compromised?',opts:['Post about it on social media','Change your Facebook password','Call your bank immediately and dial 1930','Wait to see if money is missing'], ans:2, cat:'Incident Response', exp:'Time is critical! Call your bank to freeze the account and dial 1930 (National Cybercrime Helpline) — every minute matters in financial fraud.'},
+];
+
+let quizState = { current: 0, score: 0, answered: false };
+
+function renderQuiz() {
+  const q = quizData[quizState.current];
+  document.getElementById('qNum').textContent = `QUESTION ${String(quizState.current + 1).padStart(2,'0')}`;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('qCat').textContent = '🏷 ' + q.cat;
+  document.getElementById('quizCount').textContent = `Q ${quizState.current + 1} / ${quizData.length}`;
+  document.getElementById('quizBar').style.width = `${(quizState.current / quizData.length) * 100}%`;
+  document.getElementById('qFeedback').className = 'quiz-feedback';
+  document.getElementById('qFeedback').textContent = '';
+  document.getElementById('nextBtn').classList.remove('show');
+  quizState.answered = false;
+
+  const opts = document.getElementById('qOptions');
+  opts.innerHTML = q.opts.map((o, i) => `
+    <button class="quiz-option" onclick="answerQuiz(${i}, this)">${o}</button>
+  `).join('');
+}
+
+function answerQuiz(idx, btn) {
+  if(quizState.answered) return;
+  quizState.answered = true;
+  const q = quizData[quizState.current];
+  const btns = document.querySelectorAll('.quiz-option');
+  btns.forEach(b => b.disabled = true);
+
+  const fb = document.getElementById('qFeedback');
+  if(idx === q.ans) {
+    btn.classList.add('correct');
+    quizState.score++;
+    document.getElementById('quizXP').textContent = `Score: ${quizState.score}`;
+    fb.className = 'quiz-feedback show good';
+    fb.textContent = '✓ Correct! ' + q.exp;
+  } else {
+    btn.classList.add('wrong');
+    btns[q.ans].classList.add('correct');
+    fb.className = 'quiz-feedback show bad';
+    fb.textContent = '✗ Incorrect. ' + q.exp;
+  }
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function nextQuestion() {
+  quizState.current++;
+  if(quizState.current >= quizData.length) {
+    showScore();
+  } else {
+    renderQuiz();
+  }
+}
+
+function showScore() {
+  document.getElementById('quizActive').style.display = 'none';
+  const sp = document.getElementById('scorePanelWrap');
+  sp.classList.add('show');
+  const pct = Math.round((quizState.score / quizData.length) * 100);
+  document.getElementById('scoreNum').textContent = `${quizState.score}/${quizData.length}`;
+  const msgs = [
+    [0,40,'Keep learning! Review the glossary and try again.'],
+    [40,70,'Not bad! Focus on the topics you missed.'],
+    [70,90,'Great work! You\'re developing strong cyber awareness.'],
+    [90,101,'Exceptional! You\'re a CyberShield champion! 🏆'],
+  ];
+  const msg = msgs.find(m => pct >= m[0] && pct < m[1]);
+  document.getElementById('scoreMsg').textContent = msg[2];
+}
+
+function restartQuiz() {
+  quizState = { current: 0, score: 0, answered: false };
+  document.getElementById('quizXP').textContent = 'Score: 0';
+  document.getElementById('quizActive').style.display = '';
+  document.getElementById('scorePanelWrap').classList.remove('show');
+  renderQuiz();
+}
+
+renderQuiz();
+
+// === LIVE FEED ANIMATION ===
+const feedMessages = [
+  {type:'threat', msg:'Phishing link reported — fake UPI portal'},
+  {type:'warn', msg:'Suspicious QR detected on campus'},
+  {type:'safe', msg:'URL verified — NPTEL course portal'},
+  {type:'threat', msg:'OTP scam call reported — Bengaluru'},
+  {type:'warn', msg:'Fake internship email circulating in groups'},
+  {type:'safe', msg:'Aadhaar verification site confirmed legitimate'},
+  {type:'threat', msg:'Malicious APK shared on Telegram channel'},
+  {type:'warn', msg:'Lottery scam SMS surge detected'},
+];
+
+let feedIdx = 0;
+setInterval(() => {
+  const feed = document.getElementById('liveFeed');
+  if(!feed) return;
+  const item = feedMessages[feedIdx % feedMessages.length];
+  const now = new Date();
+  const time = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+  const el = document.createElement('div');
+  el.className = `feed-item ${item.type}`;
+  el.innerHTML = `<div class="feed-dot"></div>${item.msg}<div class="feed-time">${time}</div>`;
+  feed.insertBefore(el, feed.firstChild);
+  if(feed.children.length > 10) feed.removeChild(feed.lastChild);
+  feedIdx++;
+}, 4000);
+</script>
+</body>
+</html>
