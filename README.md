@@ -45,7 +45,7 @@ The system combines **machine learning, browser extensions, threat intelligence 
 The flagship web dashboard featuring URL Scanner, Fake News Detector, Deepfake Analyzer, Threat Sandbox, and Live Intelligence Dashboard.
 
 > Full-stack Next.js + FastAPI application with Gemini AI integration.
-
+<img src="grme/Screenshot 202026-07-25 20235838.png" width="300" alt="landing page"/>
 ---
 
 ### 2. Sentinelix & GuardMe — Mobile Cybersecurity Apps
@@ -119,7 +119,7 @@ Send any suspicious URL to our WhatsApp bot and get an instant threat analysis r
 ---
 
 ## TrapEyeX Web Platform — Module Details
-<img src= ""C:\Users\aagma_r95jbd4\OneDrive\画像\Screenshots\Screenshot 2026-07-25 235838.png" width="300" alt="Module"/>
+<img src="grme/Screenshot 202026-07-25 20235905.png" width="300" alt="launch"/>
 ### URL Phishing Scanner
 Extracts **20+ features** including:
 - URL length, dot count, subdomain depth
@@ -145,6 +145,7 @@ Extracts **20+ features** including:
 - Behavioral heuristics logging
 - Simulated C2 connection interception
 - Real-time containment status tracking
+<img src="grme/Screenshot 202026-07-25 20235848.png" width="300" alt="sandbox"/>
 
 ### News Monitor & Dashboard
 - Fetches from NewsAPI across 6 categories
