@@ -90,7 +90,7 @@ An AI-powered mobile security guardian protecting users from phishing, scams, QR
 
 **All Tools Overview**
 
-<img src="grme/WhatsApp Image 2026-03-14 at 07.20.19.jpeg" width="300" alt="All Tools"/>
+<img src="grme/WhatsApp Image 2026-03-14 at 07.20.19.jpeg" width="300" alt="All Tools"/> 
 
 ---
 
@@ -119,7 +119,7 @@ Send any suspicious URL to our WhatsApp bot and get an instant threat analysis r
 ---
 
 ## TrapEyeX Web Platform — Module Details
-
+<img src= ""C:\Users\aagma_r95jbd4\OneDrive\画像\Screenshots\Screenshot 2026-07-25 235838.png" width="300" alt="Module"/>
 ### URL Phishing Scanner
 Extracts **20+ features** including:
 - URL length, dot count, subdomain depth
